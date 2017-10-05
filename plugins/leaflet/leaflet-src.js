@@ -2,10 +2,12 @@
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
  (c) 2010-2013, Vladimir Agafonkin
  (c) 2010-2011, CloudMade
+ (c) 2017 DN-TECH (Lansana Syll) : in order to make it work
+  for our geoJSON data
 */
 (function (window, document, undefined) {
 var oldL = window.L,
-    L = {};
+    L = [];
 
 L.version = '0.7.7';
 
@@ -6110,16 +6112,22 @@ L.GeoJSON = L.FeatureGroup.extend({
 		if (options.filter && !options.filter(geojson)) { return; }
 
 		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer, options.coordsToLatLng, options);
-		layer.feature = L.GeoJSON.asFeature(geojson);
+		
+		if (layer != undefined) {
+			layer.feature = L.GeoJSON.asFeature(geojson);
+			// console.log('leaflet');
+			// console.log(layer);
 
-		layer.defaultOptions = layer.options;
-		this.resetStyle(layer);
+			layer.defaultOptions = layer.options;
+			this.resetStyle(layer);
 
-		if (options.onEachFeature) {
-			options.onEachFeature(geojson, layer);
-		}
-
+			if (options.onEachFeature) {
+				options.onEachFeature(geojson, layer);
+			}
+		
 		return this.addLayer(layer);
+	 }
+	 return this;
 	},
 
 	resetStyle: function (layer) {
@@ -6159,6 +6167,7 @@ L.extend(L.GeoJSON, {
 
 		switch (geometry.type) {
 		case 'Point':
+			//console.log('type : ', geometry.type);
 			latlng = coordsToLatLng(coords);
 			return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
 
