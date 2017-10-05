@@ -20,8 +20,8 @@
     <link rel="stylesheet" href="css/skins/skin-blue.css">
     <link rel="stylesheet" href="plugins/leaflet/leaflet.css">
     <link rel="stylesheet" href="css/main.css">
-    <link href="bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet">
-    <link href="bower_components/bootstrap-social/bootstrap-social.less" rel="stylesheet">
+    <!--link href="bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet"-->
+    <!--link href="bower_components/bootstrap-social/bootstrap-social.less" rel="stylesheet"-->
      <!-- Marker Cluster -->
     <link rel="stylesheet" href="plugins/MarkerCluster/MarkerCluster.css">
     <link rel="stylesheet" href="plugins/MarkerCluster/MarkerCluster.Default.css">
@@ -36,8 +36,8 @@
     <div class="wrapper">
         <aside class="main-sidebar main-sidebar-light sidebar_edit">
             <section class="sidebar">
-            <div class="text-center">
-                <a target="_blank" href="http://mines.gov.gn/"><h1>Ministère des Mines</h1></a>
+            <div class="title">
+                <a target="_blank" href="http://mines.gov.gn/"><h4 class="title_text">MINISTÈRE DES MINES ET DE LA GÉOLOGIE</h4></a>
             </div>
 
          <!--   <div><br></div>-->
@@ -45,7 +45,7 @@
              <div class="alert alert-info sideColor">
 
                  <!--Region DropDown-->
-                 <br>
+                 <br><br><br><br><br><br><br><br><br><br>
                  <h4 class="info-box-number white"><i class="icon fa fa-globe fa-1x"></i>Région</h4>
                       <div class="form-group-sm">
                         <select name="region_scope" id="region_scope" onchange="changecat(this.value); getAdminLayers(); triggerUiUpdate();" class="form-control">
@@ -98,27 +98,34 @@
                                 <option value="Bauxite">Bauxite</option>
                                 <option value="Granite">Granite</option>
                                 <option value="Dolérite">Dolérite</option>
+                                <option value="Sable">Sable</option>
                         </select>
                       </div>
-                <br>
-                 
+
                  <div class="text-center">
                     <span class="info-box-text white">Currently Displaying:</span>
                     <span class="info-box-number white"><b id="country2"></b><big id="projectCount">0</big> Substance(s)  </span>
-            </div>
-                
-            </div>
-          </section>
-            <div class="logo_pad">
-                    <a target="_blank" href="http://mines.gov.gn/"><img  src="image/logo2.png" height="70" width="300"></a>
+                     <div class="container">
+                        <a id="query"><img class="imgsize" src="image/excel.png"></a>
+<!--
+                    <button id="btnPrint" type="button" class="btn btn-primary">
+                        <img id="print" class="imgsize" src="image/print1.jpg">
+                    </button>
+-->
+                </div>
+                </div>
             </div>
 
+          </section>
+            <div class="logo_pad">
+                    <a target="_blank" href="http://mines.gov.gn/"><img  src="image/logo2.png" height="200" width="200"></a>
+            </div>
         </aside>
         <section>
 
-                <div class="col-md-12" id="map">
+            <div class="col-md-12" id="map"></div>
 
-                </div>
+
                 <div>
                   <h7 class="red text-center"><i class="icon fa fa-spinner fa-5x" id="spinposition"></i></h7>
                 </div>
@@ -144,23 +151,25 @@
                 <ul class="social-network social-circle">
 
                 <li><strong style="color: white;">Contact Us: </strong></li><li></li><li></li>
-                <li><a target="_blank" href="https://www.facebook.com/BrianAlex1251" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                <li><a target="_blank" href="https://www.twitter.com/femtope" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                <li><a target="_blank" href="https://plus.google.com/u/0/115849015961200482106" class="icoGoogle" title="Google +"><i class="fa fa-google-plus"></i></a></li>
-                <li><a target="_blank" href="https://www.linkedin.com/in/oluwafemi-ooju-0061b627" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+                <li><a target="_blank" href="https://www.facebook.com/" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                <li><a target="_blank" href="https://www.twitter.com/" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                <li><a target="_blank" href="https://plus.google.com/u/0/" class="icoGoogle" title="Google +"><i class="fa fa-google-plus"></i></a></li>
+                <li><a target="_blank" href="https://www.linkedin.com/in/" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
 
             </ul>
         </div>
         </section>
         <script src="js/changePrefecture.js"></script>
-<!--        <script src="js/date.js"></script>-->
+     <!--        <script src="js/date.js"></script>-->
+        <script src="js/FileSaver.js"></script>
+        <script src="js/html2canvas.js"></script>
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
         <!-- Bootstrap 3.3.5 -->
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <!-- AdminLTE App -->
         <script src="js/app.min.js"></script>
-        <script src="plugins/leaflet/leaflet.js"></script>
+        <script src="plugins/leaflet/leaflet-src.js"></script>
         <script src="js/main.js"></script>
         <script src="plugins/MarkerCluster/leaflet.markercluster-src.js"></script>
 <!--        <script src="node_modules/turf/turf.js"></script>-->

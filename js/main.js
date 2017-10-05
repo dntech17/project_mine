@@ -76,19 +76,53 @@ function adjustLayerbyZoom(zoomGIN) {
 
 }
 
+//function printDiv(divName) {
+//     var printContents = document.getElementById(divName).innerHTML;
+//     var originalContents = document.body.innerHTML;
+//
+//     document.body.innerHTML = printContents;
+//
+//     window.print();
+//
+//     document.body.innerHTML = originalContents;
+//}
+
+$(function() {
+    $("#btnPrint").click(function() {
+        html2canvas($("#map"), {
+            onrendered: function(canvas) {
+                theCanvas = canvas;
+                document.body.appendChild(canvas);
+
+                canvas.toBlob(function(blob) {
+					saveAs(blob, "Dashboard.png");
+				});
+            }
+        });
+    });
+});
+
+
 //This drives all the operation that will be rendering on the map
 function triggerUiUpdate() {
     societe = $('#societe_scope').val()
     region = $('#region_scope').val()
-    prefecture = $('#prefecture_scope').val()
+    prefecture = (($('#prefecture_scope').val() != undefined) ? ($('#prefecture_scope').val()).toLowerCase() : '' );
+    // prefecture = ($('#prefecture_scope').val()).toLowerCase();
     substance = $('#substance_type').val()
-    console.log("All Seleceted: ", societe+"  "+region+"  "+prefecture+"  "+substance+"  "+date)
+    console.log("All Seleceted: ", societe+"  "+region+"  "+prefecture+"  "+substance)
     var query = buildQuery(region, prefecture, societe, substance)
+    download_query = (query.replace("http:", "https:").replace("format=GeoJSON&", ""))+"&format=CSV";
+    document.getElementById("query").setAttribute("href",download_query);
     console.log("Query: ", query)
     getData(query)
+    //var download_query = """+query+""";
     prefecture_select = $('#region_scope').val()
 }
 
+//http://femtope.cartodb.com/api/v2/sql?q=SELECT%20*%20FROM%20mine_guinea&format=CSV
+
+//https://femtope.cartodb.com/api/v2/sql?q=SELECT * FROM mine_guinea WHERE carriere_region = 'Boké'
 
 //Read data from carto and filter via selection from the interface
 function buildQuery(region, prefecture, societe, substance) {
@@ -132,14 +166,19 @@ function buildQuery(region, prefecture, societe, substance) {
 
 //Helps add data to the marker cluster and cluster to the map with icons
 function addDataToMap(geoData) {
+    console.log('add data to map');
+    // console.log(geoData);
     // adjustLayerbyZoom(map.getZoom())
-    //remove all layers first
+    // remove all layers first
 
-    if (dataLayer != null)
+    if (dataLayer != null){
         map.removeLayer(dataLayer)
+    }
+        
 
-    if (markerGroup != null)
+    if (markerGroup != null){
         map.removeLayer(markerGroup)
+    }
 
     var _radius = 8
     var _outColor = "#fff"
@@ -183,6 +222,7 @@ function addDataToMap(geoData) {
         })
         dataLayer = L.geoJson(geoData, {
         pointToLayer: function (feature, latlng) {
+            
             if (feature.properties.substance == "Dolérite"){
             var marker = L.marker(latlng, {icon: dolerite})
                 //markerGroup.addLayer(marker);
@@ -220,14 +260,15 @@ function addDataToMap(geoData) {
     })
 
     markerGroup.addLayer(dataLayer);
-//    map.fitBounds(dataLayer);
-    map.fitBounds(markerGroup);
+    map.fitBounds(dataLayer);
+//    map.fitBounds(markerGroup);
     map.addLayer(markerGroup);
 }
 
 
 //Add administrative boundaries to the map and symbolizes them
 function addAdminLayersToMap(layers) {
+    console.log('ajout du layer', layers)
     var layerStyles = {
             'admin0': {
                 "clickable": true,
@@ -248,7 +289,8 @@ function addAdminLayersToMap(layers) {
             'region': {
                 "clickable": true,
                 "color": '#e2095c',
-                "fillColor": '#80FFFFFF',
+                // "fillColor": '#80FFFFFF',
+                "fillColor": 'blue',
                 "weight": 2.0,
                 "opacity": 0.7,
                 "fillOpacity": 0.05
@@ -263,14 +305,15 @@ function addAdminLayersToMap(layers) {
             }
       }
 
-    regionSelect = $('#region_scope').val()
-    prefectureSelect = $('#prefecture_scope').val()
+    regionSelect = $('#region_scope').val();
+    prefectureSelect = $('#prefecture_scope').val();
+    
     guineaAdminLayer0 = L.geoJson(layers['guineaAdmin0'], {
         style: layerStyles['admin0']
     }).addTo(map)
 
     guineaAdminLayer2 = L.geoJson(layers['guineaAdmin2'], {
-        style: layerStyles['region'],
+        style: layerStyles['admin2'],
         onEachFeature: function (feature, layer) {
             var labelIcon = L.divIcon({
                 className: 'labelLga-icon',
@@ -284,30 +327,35 @@ function addAdminLayersToMap(layers) {
     })
 
     //Zoom In to region level on selection
-    if(region_layer != null)
-      map.removeLayer(region_layer)
+    if(regionSelect != null){
+        console.log('region not null');
+        //map.removeLayer(regionSelect)
+        region_layer = L.geoJson(layers['guineaAdmin1'], {
+            filter: function(feature) {
+                return feature.properties.NAME_1 === regionSelect
+            },
+            style: layerStyles['region'],
+        })
+        .addTo(map)
+        map.fitBounds(region_layer)
+    }
 
-      region_layer = L.geoJson(layers['guineaAdmin1'], {
-        filter: function(feature) {
-          return feature.properties.NAME_1 === regionSelect
-      },
-      style: layerStyles['region'],
-      }).addTo(map)
-    map.fitBounds(region_layer)
 
     //Zoom In to Prefecture Level on selection
 
-    if(prefecture_layer != null)
-      map.removeLayer(prefecture_layer)
-
-      prefecture_layer = L.geoJson(layers['guineaAdmin2'], {
+    if(prefectureSelect != null){
+        console.log('prefecture not null');
+        //map.removeLayer(prefecture_layer)
+        prefecture_layer = L.geoJson(layers['guineaAdmin2'], {
         filter: function(feature) {
           return feature.properties.NAME_2 === prefectureSelect
-      },
-      style: layerStyles['region'],
-      }).addTo(map)
+        },
+      style: layerStyles['prefecture'],
+      })
+      .addTo(map)
     map.fitBounds(prefecture_layer)
     console.log("Zoom Level ",map.getZoom());
+    }
 }
 
 //Help attached counts of verious multiselection via query to the interface
@@ -329,10 +377,12 @@ function normalizeName(source) {
 //Help with popup information
 function buildPopupContent(feature) {
     var subcontent = ''
-    var propertyNames = ['substance','date', 'carriere_region', 'carriere_prefecture', 'carriere_sous_prefecture', 'prenom_nom', 'fonction', 'societe', 'prenom_directeur', 'prenom_nom_directeur', 'sexe_directeur', 'email_directeur', 'telephone_directeur', 'emploi_direct_femme', 'emploi_direct_homme', 'prix_unitaire', 'production_total', 'quantite_vendu']
+    var propertyNames = ['prenom_nom', 'fonction', 'carriere_region', 'carriere_prefecture', 'carriere_sous_prefecture', 'substance', 'societe', 'site', 'taxe_superficiaire', 'prenom_directeur', 'observation', 'production_total', 'email_directeur', 'telephone_directeur', 'substance', 'date_expiration', 'date_demande', 'prix_unitaire', 'quantite_vendu', 'emploi_expatrier_femme', 'emploi_expatrier_homme', 'emploi_direct_femme', 'emploi_direct_homme', 'date']
     for (var i = 0; i < propertyNames.length; i++) {
-        subcontent = subcontent.concat('<p><strong>' + normalizeName(propertyNames[i]) + ': </strong>' + feature.properties[propertyNames[i]] + '</p>')
-
+        let contain = feature.properties[propertyNames[i]] ;
+        if (contain){
+            subcontent = subcontent.concat('<p><strong>' + normalizeName(propertyNames[i]) + ': </strong>' + contain + '</p>')            
+        }  
     }
     return subcontent;
 }
@@ -350,12 +400,12 @@ function hideLoader() {
 
 function getData(queryUrl) {
     showLoader()
-    $.post(queryUrl, function (data) {
+    $.getJSON(queryUrl, function (data) {
         hideLoader()
         addDataToMap(data)
         console.log('Data-Geo::  ', data);
     }).fail(function () {
-        console.log("error!")
+        console.log("error! when getting data")
     });
 }
 
@@ -364,33 +414,66 @@ function getAdminLayers() {
     var adminLayers = {}
 
     //Add Admin Layers to Map
-     $.get('resources/GIN_Admin0.json', function (guinea_admin0) {
+    //loadRessource('resources/GIN_Admin0.json','guineaAdmin0');
+    
+     $.getJSON('resources/GIN_Admin0.json', function (guinea_admin0) {
         adminLayers['guineaAdmin0'] = guinea_admin0
+        console.log(guinea_admin0);
         addAdminLayersToMap(adminLayers)
 		}).fail(function () {
-            logError(null)
+            logError('unable to add the layer guineaAdmin0 to the map');
         })
-
-     $.get('resources/GIN_Admin1.json', function (guinea_admin1) {
+    
+     $.getJSON('resources/gin_admin1.json', function (guinea_admin1) {
         adminLayers['guineaAdmin1']= guinea_admin1
         addAdminLayersToMap(adminLayers)
 		}).fail(function () {
-            logError(null)
+            logError('unable to add the layer guineaAdmin1 to the map');
         })
-
-
-     $.get('resources/GIN_Admin2.json', function (guinea_admin2) {
+    
+     $.getJSON('resources/GIN_Admin2.json', function (guinea_admin2) {
         adminLayers['guineaAdmin2'] = guinea_admin2
         addAdminLayersToMap(adminLayers)
 		}).fail(function () {
-            logError(null)
+            logError('unable to add the layer guineaAdmin2 to the map');
         })
-
-
+    
 }
 
 function logError(error) {
     console.log("error!")
+}
+
+function loadRessource(ressource, layerName){
+    let encodedURL = encodeURIComponent('http://localhost/project_mine/' + ressource);
+    //console.log(encodedURL);
+    //console.log(ressource);
+    $.ajax({
+        url: ressource,
+        done: function (data) {
+            console.log('dans success');
+            adminLayers[layerName] = data ;
+            addAdminLayersToMap(adminLayers);
+            console.log(data);
+        },
+        async: false,
+        error: function () {
+           logError('error when loading ressource', ressource);
+       }
+   })
+}
+
+// to get ressource either on local on a server
+function getRessource(name) {
+    let localUrl = "http://localhost/project_mine/resources/" + name
+
+    var http = new XMLHttpRequest();
+    http.open('HEAD', localUrl, false);
+    http.send();
+
+    if(http.status != 404){
+        return localUrl
+    }
 }
 
 
@@ -431,7 +514,7 @@ function showPrefecture() {
 
 getAdminLayers()
 hideLoader()
-/*triggerUiUpdate()*/
+triggerUiUpdate()
 
 
 //For Auto Date Generation

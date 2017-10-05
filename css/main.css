@@ -1,5 +1,5 @@
 #map {
-    height: 710px;
+    height: 700px;
 }
 
 .skin-red-light .wrapper,
@@ -95,6 +95,16 @@
 }
 */
 
+.title{
+    position: absolute;
+    top: 0px;
+    padding-left: 5px;
+}
+
+.title_text {
+    text-align: center;
+    font-size: 20px;
+}
 
 .info-box {
     overflow: auto;
@@ -105,8 +115,8 @@
 }
 .logo_pad{
     position: absolute;
-    top: 10px;
-    padding-left: 85px;
+    top: 60px;
+    padding-left: 15px;
 
 }
 
@@ -117,6 +127,16 @@
     text-align: left;
     padding-left: 20px;
 
+}
+
+.imgbutton {
+    background-image: url(images/print1.jpg);
+    background-repeat: no-repeat;
+}
+
+.imgsize{
+    height: 50px;
+    width: 50px;
 }
 
 #spinposition {
@@ -132,9 +152,10 @@
     position: absolute;
     top: 0px;
     right: 35px;
-    width: 250px;
+    width: 320px;
     height: 100px;
     background: transparent;
+/*    overflow: scroll;*/
 }
 
 input.checkbox  {
