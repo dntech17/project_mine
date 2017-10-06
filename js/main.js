@@ -210,6 +210,17 @@ function addDataToMap(geoData) {
         iconAnchor: [25, 25]
     });
 
+    var active = L.icon({
+        iconUrl: "image/marker-icon-green.png",
+        iconSize: [20, 20],
+        iconAnchor: [25, 25]
+    });
+
+    var expired = L.icon({
+        iconUrl: "image/marker-icon-red.png",
+        iconSize: [20, 20],
+        iconAnchor: [25, 25]
+    });
 
 
 
@@ -222,7 +233,11 @@ function addDataToMap(geoData) {
         })
         dataLayer = L.geoJson(geoData, {
         pointToLayer: function (feature, latlng) {
+
+            var expire_date = new Date(feature.properties.date_expiration);
+            var today = new Date ();
             
+            /* 
             if (feature.properties.substance == "Dolérite"){
             var marker = L.marker(latlng, {icon: dolerite})
                 //markerGroup.addLayer(marker);
@@ -236,9 +251,12 @@ function addDataToMap(geoData) {
             var marker = L.marker(latlng, {icon: calcaire})
                 //markerGroup.addLayer(marker);
             }
-
-            if (feature.properties.substance == "Pouzzolane"){
-            var marker = L.marker(latlng, {icon: pouzzolane})
+            */
+            if (expire_date < today){
+                var marker = L.marker(latlng, {icon: active});
+                //markerGroup.addLayer(marker);
+            } else {
+                var marker = L.marker(latlng, {icon: expired});
                 //markerGroup.addLayer(marker);
             }
 
@@ -268,7 +286,7 @@ function addDataToMap(geoData) {
 
 //Add administrative boundaries to the map and symbolizes them
 function addAdminLayersToMap(layers) {
-    console.log('ajout du layer', layers)
+    // console.log('ajout du layer', layers)
     var layerStyles = {
             'admin0': {
                 "clickable": true,
@@ -328,8 +346,8 @@ function addAdminLayersToMap(layers) {
 
     //Zoom In to region level on selection
     if(regionSelect != null){
-        console.log('region not null');
-        //map.removeLayer(regionSelect)
+        // console.log('region not null');
+        // map.removeLayer(regionSelect)
         region_layer = L.geoJson(layers['guineaAdmin1'], {
             filter: function(feature) {
                 return feature.properties.NAME_1 === regionSelect
@@ -344,8 +362,8 @@ function addAdminLayersToMap(layers) {
     //Zoom In to Prefecture Level on selection
 
     if(prefectureSelect != null){
-        console.log('prefecture not null');
-        //map.removeLayer(prefecture_layer)
+        // console.log('prefecture not null');
+        // map.removeLayer(prefecture_layer)
         prefecture_layer = L.geoJson(layers['guineaAdmin2'], {
         filter: function(feature) {
           return feature.properties.NAME_2 === prefectureSelect
@@ -403,7 +421,7 @@ function getData(queryUrl) {
     $.getJSON(queryUrl, function (data) {
         hideLoader()
         addDataToMap(data)
-        console.log('Data-Geo::  ', data);
+        // console.log('Data-Geo::  ', data);
     }).fail(function () {
         console.log("error! when getting data")
     });
@@ -418,7 +436,7 @@ function getAdminLayers() {
     
      $.getJSON('resources/GIN_Admin0.json', function (guinea_admin0) {
         adminLayers['guineaAdmin0'] = guinea_admin0
-        console.log(guinea_admin0);
+        // console.log(guinea_admin0);
         addAdminLayersToMap(adminLayers)
 		}).fail(function () {
             logError('unable to add the layer guineaAdmin0 to the map');
@@ -451,10 +469,10 @@ function loadRessource(ressource, layerName){
     $.ajax({
         url: ressource,
         done: function (data) {
-            console.log('dans success');
+            // console.log('dans success');
             adminLayers[layerName] = data ;
             addAdminLayersToMap(adminLayers);
-            console.log(data);
+            // console.log(data);
         },
         async: false,
         error: function () {
