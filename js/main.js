@@ -252,7 +252,7 @@ function addDataToMap(geoData) {
                 //markerGroup.addLayer(marker);
             }
             */
-            if (expire_date < today){
+            if (expire_date > today){
                 var marker = L.marker(latlng, {icon: active});
                 //markerGroup.addLayer(marker);
             } else {
