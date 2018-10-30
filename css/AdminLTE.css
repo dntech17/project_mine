@@ -425,7 +425,7 @@ a:focus {
   position: absolute;
   top: 0;
   left: 0;
-  padding-top: 50px;
+  padding-top: 5px;
   min-height: 100%;
   width: 80px;
   z-index: 810;
@@ -1593,24 +1593,24 @@ a:focus {
   color: #444444;
 }
 .box.box-solid.box-primary {
-  border: 1px solid #3c8dbc;
+  border: 1px solid #856E3B;
 }
 .box.box-solid.box-primary > .box-header {
   color: #ffffff;
-  background: #4d73cc;
-  background-color: #4d73cc;
+  background: #856E3B;
+  background-color: #856E3B;
 }
 .box.box-solid.box-primary > .box-header a,
 .box.box-solid.box-primary > .box-header .btn {
   color: #ffffff;
 }
 .box.box-solid.box-info {
-  border: 1px solid #00c0ef;
+  border: 1px solid #856E3B;
 }
 .box.box-solid.box-info > .box-header {
   color: #ffffff;
-  background: #00c0ef;
-  background-color: #00c0ef;
+  background: #856E3B;
+  background-color: #856E3B;
 }
 .box.box-solid.box-info > .box-header a,
 .box.box-solid.box-info > .box-header .btn {

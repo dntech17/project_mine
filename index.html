@@ -36,90 +36,68 @@
     <div class="wrapper">
         <aside class="main-sidebar main-sidebar-light sidebar_edit">
             <section class="sidebar">
-            <div class="title">
-                <a target="_blank" href="http://mines.gov.gn/"><h4 class="title_text">MINISTÈRE DES MINES ET DE LA GÉOLOGIE</h4></a>
-            </div>
-
-         <!--   <div><br></div>-->
-            
-             <div class="alert alert-info sideColor">
-
-                 <!--Region DropDown-->
-                 <br><br><br><br><br><br><br><br><br><br>
-                 <h4 class="info-box-number white"><i class="icon fa fa-globe fa-1x"></i>Région</h4>
-                      <div class="form-group-sm">
-                        <select name="region_scope" id="region_scope" onchange="changecat(this.value); getAdminLayers(); triggerUiUpdate();" class="form-control">
-                            <option value="">All</option>
-                            <option value="Boké">Boké</option>
-                            <option value="Conakry">Conakry</option>
-                            <option value="Faranah">Faranah</option>
-                            <option value="Kankan">Kankan</option>
-                            <option value="Kindia">Kindia</option>
-                            <option value="Labe">Labe</option>
-                            <option value="Mamou">Mamou</option>
-                            <option value="Nzérékoré">Nzérékoré</option>
-                        </select>
+                <div class="header_style">
+                    <div class="logo_pad">
+                        <a target="_blank" href="http://mines.gov.gn/"><img  src="image/logo2.png" height="200" width="200"></a>
                     </div>
-
-                 <!--Prefecture DropDown-->
-                 <br>
-                 <h4 class="info-box-number white" id="prefecture_id" readonly style="visibility:true"><i class="icon fa fa-globe fa-1x"></i>Préfecture</h4>
-                      <div id="prefecture_id1" class="form-group-sm" readonly style="visibility:true">
-                        <select name="prefecture_scope" id="prefecture_scope" onchange="getAdminLayers(); triggerUiUpdate();" class="form-control">
-                            <option value="" disabled selected>All</option>
-                        </select>
+                    <div class="title">
+                        <a target="_blank" href="http://mines.gov.gn/"><h4 class="title_text">MINISTÈRE DES MINES ET DE LA GÉOLOGIE</h4></a>
                     </div>
-
-                 
-                 <!--Company -->
-                 <!--br>
-                 <-- h4 class="info-box-number white"><i class="icon fa fa-building fa-1x"></i>Société</h4>
-                      <div class="form-group-sm">
-                        <select id="societe_scope" onchange="triggerUiUpdate(); getAdminLayers();" class="form-control">
-                            <option value="">All</option>
-                                <option value="G.A.C">G.A.C</option>
-                                <option value="C.B.G">C.B.G</option>
-                                <option value="RUSSAL">RUSSAL</option>
-                                <option value="Emporium">Emporium</option>
-                        </select>
-                      </div-->
-
-
-                 <!--Substance / Natural Resources-->
-                 <br>
-                 <h4 class="info-box-number white"><i class="icon fa fa-diamond fa-1x"></i>Substance/Resource</h4>
-                      <div class="form-group-sm">
-                        <select id="substance_type" onchange="triggerUiUpdate(); getAdminLayers();" class="form-control">
-
-                            <option value="">All</option>
-                                <option value="Pouzzolane">Pouzzolane</option>
-                                <option value="Calcaire">Calcaire</option>
-                                <option value="Diamant">Diamant</option>
-                                <option value="Bauxite">Bauxite</option>
-                                <option value="Granite">Granite</option>
-                                <option value="Dolérite">Dolérite</option>
-                                <option value="Sable">Sable</option>
-                        </select>
-                      </div>
-
-                 <div class="text-center">
-                    <span class="info-box-text white">Currently Displaying:</span>
-                    <span class="info-box-number white"><b id="country2"></b><big id="projectCount">0</big> Substance(s)  </span>
-                     <div class="container">
-                        <a id="query"><img class="imgsize" src="image/excel.png"></a>
-<!--
-                    <button id="btnPrint" type="button" class="btn btn-primary">
-                        <img id="print" class="imgsize" src="image/print1.jpg">
-                    </button>
--->
                 </div>
-                </div>
-            </div>
 
-          </section>
-            <div class="logo_pad">
-                    <a target="_blank" href="http://mines.gov.gn/"><img  src="image/logo2.png" height="200" width="200"></a>
-            </div>
+                <!--   <div><br></div>-->
+
+                <div class="alert alert-info sideColor">
+
+                    <!--Region DropDown-->
+                    <h4 class="info-box-number white"><i class="icon fa fa-globe fa-1x"></i>Région</h4>
+                        <div class="form-group-sm">
+                            <select name="region_scope" id="region_scope" onchange="changecat(this.value); getAdminLayers(); triggerUiUpdate();" class="form-control">
+                                <option value="">All</option>
+                                <option value="Boké">Boké</option>
+                                <option value="Conakry">Conakry</option>
+                                <option value="Faranah">Faranah</option>
+                                <option value="Kankan">Kankan</option>
+                                <option value="Kindia">Kindia</option>
+                                <option value="Labe">Labe</option>
+                                <option value="Mamou">Mamou</option>
+                                <option value="Nzérékoré">Nzérékoré</option>
+                            </select>
+                        </div>
+
+                    <!--Prefecture DropDown-->
+                    <br>
+                    <h4 class="info-box-number white" id="prefecture_id" readonly style="visibility:true"><i class="icon fa fa-globe fa-1x"></i>Préfecture</h4>
+                        <div id="prefecture_id1" class="form-group-sm" readonly style="visibility:true">
+                            <select name="prefecture_scope" id="prefecture_scope" onchange="getAdminLayers(); triggerUiUpdate();" class="form-control">
+                                <option value="" disabled selected>All</option>
+                            </select>
+                        </div>
+
+                    <!--Substance / Natural Resources-->
+                    <br>
+                    <h4 class="info-box-number white"><i class="icon fa fa-diamond fa-1x"></i>Substance/Resource</h4>
+                        <div class="form-group-sm">
+                            <select id="substance_type" onchange="triggerUiUpdate(); getAdminLayers();" class="form-control">
+
+                                <option value="">All</option>
+                                    <option value="Pouzzolane">Pouzzolane</option>
+                                    <option value="Calcaire">Calcaire</option>
+                                    <option value="Diamant">Diamant</option>
+                                    <option value="Bauxite">Bauxite</option>
+                                    <option value="Granite">Granite</option>
+                                    <option value="Dolérite">Dolérite</option>
+                                    <option value="Sable">Sable</option>
+                            </select>
+                        </div>
+
+                    <div class="text-center">
+                        <span class="info-box-text white">Currently Displaying:</span>
+                        <span class="info-box-number white"><b id="country2"></b><big id="projectCount">0</big> Substance(s)  </span>
+                    </div>
+                </div>
+
+            </section>
         </aside>
         <section>
 
