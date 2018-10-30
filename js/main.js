@@ -105,15 +105,15 @@ $(function() {
 
 //This drives all the operation that will be rendering on the map
 function triggerUiUpdate() {
-    societe = $('#societe_scope').val()
+    // societe = $('#societe_scope').val()
     region = $('#region_scope').val()
     prefecture = (($('#prefecture_scope').val() != undefined) ? ($('#prefecture_scope').val()).toLowerCase() : '' );
     // prefecture = ($('#prefecture_scope').val()).toLowerCase();
     substance = $('#substance_type').val()
-    console.log("All Seleceted: ", societe+"  "+region+"  "+prefecture+"  "+substance)
-    var query = buildQuery(region, prefecture, societe, substance)
+    console.log("All Seleceted: "+region+"  "+prefecture+"  "+substance)
+    var query = buildQuery(region, prefecture, substance)
     download_query = (query.replace("http:", "https:").replace("format=GeoJSON&", ""))+"&format=CSV";
-    document.getElementById("query").setAttribute("href",download_query);
+    document.getElementById("query").setAttribute("href", download_query);
     console.log("Query: ", query)
     getData(query)
     //var download_query = """+query+""";
@@ -125,11 +125,11 @@ function triggerUiUpdate() {
 //https://femtope.cartodb.com/api/v2/sql?q=SELECT * FROM mine_guinea WHERE carriere_region = 'Boké'
 
 //Read data from carto and filter via selection from the interface
-function buildQuery(region, prefecture, societe, substance) {
+function buildQuery(region, prefecture, substance) {
   var needsAnd = false;
     query = 'https://femtope.cartodb.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM mine_guinea';
     console.log("Date in Query: ",date)
-   if (region.length > 0 || prefecture.length > 0 || societe.length > 0 || substance.length > 0 ){
+   if (region.length > 0 || prefecture.length > 0 || substance.length > 0 ){
        query = query.concat(' WHERE')
        if (region.length > 0){
       query = query.concat(" carriere_region = '".concat(region.concat("'")))
@@ -142,10 +142,10 @@ function buildQuery(region, prefecture, societe, substance) {
       needsAnd = true
     }
 
-    if (societe.length > 0){
-      query = needsAnd  ? query.concat(" AND societe = '".concat(societe.concat("'"))) :  query.concat(" societe = '".concat(societe.concat("'")))
-      needsAnd = true
-    }
+    // if (societe.length > 0){
+    //   query = needsAnd  ? query.concat(" AND societe = '".concat(societe.concat("'"))) :  query.concat(" societe = '".concat(societe.concat("'")))
+    //   needsAnd = true
+    // }
 
     if(substance.length > 0) {
       query = needsAnd  ? query.concat(" AND substance = '".concat(substance.concat("'"))) :  query.concat(" substance = '".concat(substance.concat("'")))
